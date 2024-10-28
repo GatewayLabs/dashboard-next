@@ -1,5 +1,6 @@
 const dashboard = '/dashboard';
 const explorer = '/explorer';
+const github = '/projects/github';
 const routes = {
   home: '/',
   new: '/new',
@@ -24,6 +25,12 @@ const routes = {
     signMessage: `${explorer}/sign-message`,
     dataModel: (dataModelId) => `${explorer}/data-models/${dataModelId}`,
     requestTemplates: `${explorer}/request-templates`,
+  },
+  projects: {
+    github: {
+      home: github,
+      mydata: `${github}/mydata`,
+    },
   },
 };
 

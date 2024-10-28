@@ -1,3 +1,5 @@
+import GithubLayout from './components/github-layout';
+
 export default function GithubProject() {
-  return <div>GithubProject</div>;
+  return <GithubLayout>Public</GithubLayout>;
 }
