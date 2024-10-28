@@ -13,8 +13,7 @@ export default function GithubLayout({ children }: PropsWithChildren) {
       <Box
         width="100%"
         sx={{
-          pt: 5,
-          pb: 4,
+          pb: 2,
           width: '100%',
           overflow: 'hidden',
         }}

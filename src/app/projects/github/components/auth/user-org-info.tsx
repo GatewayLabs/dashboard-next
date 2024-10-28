@@ -21,7 +21,7 @@ export default function UserOrgInfo({ id, image, name, gatewayId }: Props) {
         position: 'relative',
       }}
     >
-      <Stack direction="column">
+      <Stack direction="column" sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography component="span" variant="subtitle1" color="black">
           {hasName ? name : `@${gatewayId}`}
         </Typography>
