@@ -1,35 +1,30 @@
 import { Box, Skeleton } from '@mui/material';
+import { Stack } from '@mui/system';
 
 export default function AuthComponentSkeleton() {
   return (
     <Box
-      sx={(theme) => ({
-        backgroundColor: {
-          xs: 'transparent',
-          lg: 'primary.100',
-        },
-        borderRadius: theme.shape.borderRadius / 16, //Strange issue with MUI
+      sx={{
         p: 2,
-        mr: {
-          xs: -2,
-          lg: 0,
-        },
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
-      })}
+        width: 300,
+      }}
     >
-      <Skeleton variant="circular" sx={{ width: 40, height: 40 }} />
-      <Skeleton
+      <Stack
         sx={{
-          width: '50%',
-          ml: 2,
-          display: {
-            xs: 'none',
-            lg: 'block',
-          },
+          mr: 2,
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          alignItems: 'self-end',
         }}
-      />
+      >
+        <Skeleton sx={{ width: 150, height: 30 }} />
+        <Skeleton sx={{ width: 100, height: 20 }} />
+      </Stack>
+
+      <Skeleton variant="circular" sx={{ width: 40, height: 40 }} />
     </Box>
   );
 }

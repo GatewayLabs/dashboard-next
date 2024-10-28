@@ -4,7 +4,11 @@ import Link from 'next/link';
 
 import routes from '@/constants/routes';
 
-import { LogoutOutlined, SettingsOutlined } from '@mui/icons-material';
+import {
+  LogoutOutlined,
+  OpenInNew,
+  SettingsOutlined,
+} from '@mui/icons-material';
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 
 type Props = {
@@ -14,12 +18,18 @@ type Props = {
 export default function AuthDropdown({ onClick }: Props) {
   const onSignOut = async () => {
     await signOut({
-      callbackUrl: routes.home,
+      callbackUrl: routes.projects.github.home,
     });
   };
 
   return (
     <>
+      <MenuItem component={Link} href={routes.dashboard.home} onClick={onClick}>
+        <ListItemIcon>
+          <OpenInNew />
+        </ListItemIcon>
+        <ListItemText>Open Dashboard</ListItemText>
+      </MenuItem>
       <MenuItem
         component={Link}
         href={routes.dashboard.settings}

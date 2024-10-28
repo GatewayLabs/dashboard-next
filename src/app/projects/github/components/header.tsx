@@ -18,7 +18,7 @@ function Header() {
       }}
     >
       <Logo href={routes.projects.github.home} />
-      <AuthComponent id="profile-button" controlId="profile-menu" />
+      <AuthComponent id="github-header-auth" controlId="github-header-auth" />
     </Stack>
   );
 }
