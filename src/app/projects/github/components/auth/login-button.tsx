@@ -18,7 +18,8 @@ export default function LoginButton() {
 
   const PrimaryButton = {
     label: 'Open dashboard',
-    variant: 'outlined' as const,
+    variant: 'contained' as const,
+    sx: { alignSelf: 'flex-start' },
     ...(status === 'authenticated'
       ? { href: routes.projects.github.mydata }
       : {

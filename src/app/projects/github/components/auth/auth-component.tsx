@@ -7,7 +7,6 @@ import { limitCharsOffset } from '@/utils/string';
 
 import { ButtonBase, Menu } from '@mui/material';
 
-import AuthComponentSkeleton from './auth-component-skeleton';
 import AuthDropdown from './auth-dropdown';
 import UserOrgInfo from './user-org-info';
 
@@ -24,10 +23,6 @@ export default function AuthComponent({ id, controlId }: Props) {
   const onClick = () => {
     onClose();
   };
-
-  // if (!session?.user) {
-  //   return <AuthComponentSkeleton />;
-  // }
 
   return (
     <>

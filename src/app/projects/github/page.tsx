@@ -1,14 +1,10 @@
-import LoginButton from './components/auth/login-button';
 import GithubLayout from './components/github-layout';
+import Hero from './components/hero';
 
 export default function GithubProject() {
   return (
     <GithubLayout>
-      <>
-        <h1>GitHub Project</h1>
-        <p>GitHub project content</p>
-        <LoginButton />
-      </>
+      <Hero />
     </GithubLayout>
   );
 }

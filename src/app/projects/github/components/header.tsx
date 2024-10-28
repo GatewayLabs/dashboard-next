@@ -13,8 +13,8 @@ function Header() {
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        pb: 4,
         alignItems: 'center',
+        minHeight: 112,
       }}
     >
       <Logo href={routes.projects.github.home} />
