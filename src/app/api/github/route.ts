@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const githubDataModelId = process.env.GITHUB_DATA_MODEL_ID;
+  const githubDataModelId = process.env.NEXT_PUBLIC_GITHUB_DATA_MODEL_ID;
   if (!githubDataModelId) {
     return NextResponse.json(
       { error: 'Github data model id not found' },

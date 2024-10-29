@@ -89,13 +89,18 @@ export default function Asset({ token: githubToken }: Props) {
   const { data: session } = useSession();
   const token = session?.token;
   const did = session?.user.did;
+  const githubDataModelId = process.env.NEXT_PUBLIC_GITHUB_DATA_MODEL_ID;
 
   const { isLoading, data, refetch } = useQuery({
     queryKey: ['github-data-asset', token],
     queryFn: async () => {
+      if (!githubDataModelId) {
+        throw new Error('Github data model id not found');
+      }
+
       const { data } = await authApi(token!).GET(
         '/data-models/{id}/data-assets',
-        { params: { path: { id: 6586373368709223 } } }
+        { params: { path: { id: parseInt(githubDataModelId) } } }
       );
       return data;
     },
@@ -112,13 +117,13 @@ export default function Asset({ token: githubToken }: Props) {
     mutationKey: ['github-pda', githubToken, did],
     mutationFn: async () => {
       const claim = await fetchGitHubData(githubToken ?? '');
-      const dataAsset = await createGithubDataAsset(claim, did!);
+      const data = await createGithubDataAsset(claim, did!);
 
-      if (!dataAsset) {
+      if (!data) {
         throw new Error('Failed to create data asset');
       }
 
-      return dataAsset;
+      return data;
     },
   });
 
