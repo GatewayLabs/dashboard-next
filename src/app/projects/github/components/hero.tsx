@@ -37,7 +37,7 @@ export default function Hero() {
           sx={{ mb: 3 }}
         />
         <Stack>
-          <Typography variant="h2" mb={2} sx={{ fontSize: { xs: 34 } }}>
+          <Typography variant="h2" mb={2} sx={{ fontSize: { xs: 34, md: 60 } }}>
             Compute GitHub data using Gateway Encrypted Compute
           </Typography>
           <LoginButton />
