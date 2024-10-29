@@ -27,6 +27,7 @@ export default function AuthDropdown({ onClick }: Props) {
       <MenuItem
         component={Link}
         href={routes.dashboard.storage}
+        target="_blank"
         onClick={onClick}
       >
         <ListItemIcon>
