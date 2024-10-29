@@ -11,6 +11,7 @@ import { useSnackbar } from 'notistack';
 
 import { OpenInNew } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { PublicDataAsset } from '@/services/api/models';
 
 type GitHubUser = Endpoints['GET /user']['response']['data'];
 type GitHubRepos = Endpoints['GET /user/repos']['response']['data'];
@@ -97,6 +98,12 @@ export default function Asset({ token: githubToken }: Props) {
       );
       return data;
     },
+    select: (data: any) => {
+      const dataAssets = data.data as PublicDataAsset[];
+      return dataAssets.find((asset) =>
+        asset.acl.some((acl) => acl.did === did)
+      );
+    },
     enabled: !!session,
   });
 
@@ -150,12 +157,11 @@ export default function Asset({ token: githubToken }: Props) {
     );
   }
 
-  if (data?.data?.[0]) {
-    const dataAsset = data.data[0];
+  if (data) {
     return (
       <Button
         component={Link}
-        href={routes.dashboard.storageAsset(dataAsset.id)}
+        href={routes.dashboard.storageAsset(data.id)}
         variant="outlined"
         size="large"
         endIcon={<OpenInNew />}
