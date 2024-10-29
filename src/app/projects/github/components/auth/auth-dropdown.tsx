@@ -24,7 +24,11 @@ export default function AuthDropdown({ onClick }: Props) {
 
   return (
     <>
-      <MenuItem component={Link} href={routes.dashboard.home} onClick={onClick}>
+      <MenuItem
+        component={Link}
+        href={routes.dashboard.storage}
+        onClick={onClick}
+      >
         <ListItemIcon>
           <OpenInNew />
         </ListItemIcon>
