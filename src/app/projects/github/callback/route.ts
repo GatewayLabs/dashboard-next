@@ -1,4 +1,3 @@
-// app/projects/github/callback/route.ts
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -30,7 +29,6 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL('/projects/github', request.url));
   }
 
-  // Redireciona o usuário para a página de perfil com o access_token como parâmetro de query
   const redirectUrl = new URL('/projects/github/mydata', request.url);
   redirectUrl.searchParams.set('token', access_token);
 

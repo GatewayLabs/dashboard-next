@@ -12,7 +12,6 @@ import { useSnackbar } from 'notistack';
 import { OpenInNew } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
-// Tipos específicos para os dados retornados pela API
 type GitHubUser = Endpoints['GET /user']['response']['data'];
 type GitHubRepos = Endpoints['GET /user/repos']['response']['data'];
 type GitHubIssues = Endpoints['GET /search/issues']['response']['data'];
@@ -22,19 +21,16 @@ type GitHubPullRequests = Endpoints['GET /search/issues']['response']['data'];
 const fetchGitHubData = async (accessToken: string) => {
   const headers = { Authorization: `Bearer ${accessToken}` };
 
-  // Buscar dados do usuário
   const userDataResponse = await fetch('https://api.github.com/user', {
     headers,
   });
   const userData: GitHubUser = await userDataResponse.json();
 
-  // Buscar repositórios do usuário
   const reposResponse = await fetch('https://api.github.com/user/repos', {
     headers,
   });
   const reposData: GitHubRepos = await reposResponse.json();
 
-  // Calcular total de estrelas e linguagens usadas nos repositórios
   const repoStats = reposData.map((repo) => ({
     name: repo.name,
     stars: repo.stargazers_count,
@@ -45,7 +41,6 @@ const fetchGitHubData = async (accessToken: string) => {
     ...new Set(repoStats.map((repo) => repo.language).filter(Boolean)),
   ];
 
-  // Buscar o total de issues
   const issuesResponse = await fetch(
     `https://api.github.com/search/issues?q=author:${userData.login}+type:issue`,
     { headers }
@@ -53,7 +48,6 @@ const fetchGitHubData = async (accessToken: string) => {
   const issuesData: GitHubIssues = await issuesResponse.json();
   const totalIssues = issuesData.total_count;
 
-  // Buscar o total de pull requests
   const pullRequestsResponse = await fetch(
     `https://api.github.com/search/issues?q=author:${userData.login}+type:pr`,
     { headers }
@@ -62,13 +56,12 @@ const fetchGitHubData = async (accessToken: string) => {
     await pullRequestsResponse.json();
   const totalPullRequests = pullRequestsData.total_count;
 
-  // Buscar o total de commits
   const commitsResponse = await fetch(
     `https://api.github.com/search/commits?q=author:${userData.login}`,
     {
       headers: {
         ...headers,
-        Accept: 'application/vnd.github.cloak-preview', // Header para habilitar o endpoint de commits na busca
+        Accept: 'application/vnd.github.cloak-preview',
       },
     }
   );
