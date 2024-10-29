@@ -11,21 +11,12 @@ import Header from './header';
 
 export default function GithubLayout({ children }: PropsWithChildren) {
   return (
-    <>
-      <Container component={Stack}>
-        <Box
-          width="100%"
-          sx={{
-            pb: 2,
-            width: '100%',
-            overflow: 'hidden',
-          }}
-        >
-          <Header />
-          <Box sx={{ minHeight: 400 }}>{children}</Box>
-        </Box>
+    <Stack direction="column" sx={{ height: '100%' }}>
+      <Container component={Stack} sx={{ flexGrow: 1 }}>
+        <Header />
+        <Box sx={{ minHeight: 400 }}>{children}</Box>
       </Container>
       <Footer color="transparent" />
-    </>
+    </Stack>
   );
 }
