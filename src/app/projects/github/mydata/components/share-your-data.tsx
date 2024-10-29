@@ -27,13 +27,7 @@ function ShareYourData({ searchParamsToken }: Props) {
   }, [searchParamsToken, set]);
 
   return (
-    <Stack
-      component={Card}
-      variant="outlined"
-      sx={{
-        width: '100%',
-      }}
-    >
+    <Stack component={Card} variant="outlined">
       <Stack direction="row" alignItems="center" gap={2} p={3}>
         <IosShare color="primary" sx={{ fontSize: 40 }} />
         <Typography variant="h5">Share your data</Typography>

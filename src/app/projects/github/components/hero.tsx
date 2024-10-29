@@ -27,7 +27,7 @@ export default function Hero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          p: 4,
+          p: 3,
         }}
       >
         <Chip
