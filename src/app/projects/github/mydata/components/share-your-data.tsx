@@ -37,19 +37,17 @@ function ShareYourData({ searchParamsToken }: Props) {
           <Typography variant="subtitle1">
             Connect your Github account
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" mb={3}>
             Authorize the Gateway to access your data, you can cancel it
             whenever you want.
           </Typography>
           {token ? (
-            <Stack mt={3} gap={3}>
-              <User token={token} remove={remove} />
-            </Stack>
+            <User token={token} remove={remove} />
           ) : (
             <Button
               variant="outlined"
               size="large"
-              sx={{ alignSelf: 'flex-start', mt: 3 }}
+              sx={{ alignSelf: 'flex-start' }}
               startIcon={<FaGithub />}
               href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI}&scope=repo,user`}
             >
