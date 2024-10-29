@@ -10,6 +10,7 @@ import { Button } from '@mui/material';
 
 import GithubLayout from '../components/github-layout';
 import Asset from './components/asset';
+import Compute from './components/compute';
 import User from './components/user';
 
 export default function MyDataPage({
@@ -33,6 +34,7 @@ export default function MyDataPage({
         <>
           <User token={token} remove={remove} />
           <Asset token={token} />
+          <Compute />
         </>
       ) : (
         <Button

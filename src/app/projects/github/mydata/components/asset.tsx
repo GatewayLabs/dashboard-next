@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import routes from '@/constants/routes';
 import { authApi } from '@/services/api/api';
-import { components } from '@/services/api/types';
+import { components, TypesAccessLevel } from '@/services/api/types';
 import { Endpoints } from '@octokit/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -108,17 +108,11 @@ export default function Asset({ token: githubToken }: Props) {
       const body: components['schemas']['dto.CreateDataAssetRequest'] = {
         claim: claim as any,
         // acl: [
-        // TODO: Add Gateway ACL
-        // {
-        //   address: did!,
-        //   roles: [
-        //     TypesAccessLevel.RoleDelete,
-        // BUG: RoleShare is not working when creating a data asset to your own DID
-        //     TypesAccessLevel.RoleShare,
-        //     TypesAccessLevel.RoleView,
-        //     TypesAccessLevel.RoleUpdate,
-        //   ],
-        // },
+        //   {
+        //     address:
+        //       'did:gatewayid:gateway:7b513c52d35fa50a83e16f3f8b74b46c3ff508ec11aa2cd126d97460cc12db9c',
+        //     roles: [TypesAccessLevel.RoleView],
+        //   },
         // ],
         name: 'GitHub Data',
         data_model_id: 6586373368709223,
