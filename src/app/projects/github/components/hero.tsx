@@ -30,9 +30,14 @@ export default function Hero() {
           p: 4,
         }}
       >
-        <Chip label="Experiment" variant="outlined" color="primary" />
+        <Chip
+          label="Experiment"
+          variant="outlined"
+          color="primary"
+          sx={{ mb: 3 }}
+        />
         <Stack>
-          <Typography variant="h2" mb={2}>
+          <Typography variant="h2" mb={2} sx={{ fontSize: { xs: 34 } }}>
             Compute GitHub data using Gateway Encrypted Compute
           </Typography>
           <LoginButton />
@@ -42,7 +47,7 @@ export default function Hero() {
         sx={{
           width: { xs: '100%', md: 437 },
           minWidth: { xs: 'auto', md: 437 },
-          minHeight: 437,
+          aspectRatio: '437/437',
           position: 'relative',
         }}
       >

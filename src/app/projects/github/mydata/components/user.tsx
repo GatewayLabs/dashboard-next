@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FaGithub } from 'react-icons/fa';
 
 import { Avatar, Button, Stack, Typography } from '@mui/material';
+import { Card } from '@mui/material';
 
 type GitHubUser = Endpoints['GET /user']['response']['data'];
 
@@ -41,7 +42,15 @@ export default function User({ remove, token }: Props) {
   }
 
   return (
-    <Stack direction="row" gap={2} justifyContent="space-between">
+    <Stack
+      component={Card}
+      variant="outlined"
+      direction="row"
+      gap={2}
+      p={3}
+      justifyContent="space-between"
+      sx={{ alignSelf: 'stretch' }}
+    >
       <Stack direction="row" gap={2} alignItems="center">
         <Avatar
           src={avatar}

@@ -80,7 +80,7 @@ const fetchGitHubData = async (accessToken: string) => {
 };
 
 type Props = {
-  token: string;
+  token?: string;
 };
 
 export default function Asset({ token: githubToken }: Props) {
@@ -103,7 +103,7 @@ export default function Asset({ token: githubToken }: Props) {
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ['github-pda', githubToken, did],
     mutationFn: async () => {
-      const claim = await fetchGitHubData(githubToken);
+      const claim = await fetchGitHubData(githubToken ?? '');
 
       const body: components['schemas']['dto.CreateDataAssetRequest'] = {
         claim: claim as any,
@@ -162,7 +162,7 @@ export default function Asset({ token: githubToken }: Props) {
       <Button
         component={Link}
         href={routes.dashboard.storageAsset(dataAsset.id)}
-        variant="contained"
+        variant="outlined"
         size="large"
         endIcon={<OpenInNew />}
       >
