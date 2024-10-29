@@ -16,6 +16,7 @@ export default function Hero() {
       justifyContent="space-between"
       alignItems="stretch"
       gap={2}
+      mb={8}
     >
       <Card
         sx={{

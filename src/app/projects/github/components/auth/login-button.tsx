@@ -15,6 +15,7 @@ export default function LoginButton() {
   const [isModalWaleltOpen, setIsModalWalletOpen] = useState(false);
   const { status } = useSession();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const PrimaryButton = {
     label: 'Open dashboard',
@@ -24,25 +25,30 @@ export default function LoginButton() {
       ? { href: routes.projects.github.mydata }
       : {
           onClick: () => {
-            router.push(
-              `${routes.projects.github.home}?callbackUrl=${routes.projects.github.mydata}`
-            );
             setIsModalWalletOpen(true);
           },
         }),
   };
 
+  if (session?.user) {
+    router.push(routes.projects.github.mydata);
+  }
+
   return (
     <>
-      <Button {...PrimaryButton}>Start Now</Button>
-      <Suspense fallback={null}>
-        <WalletConnectionProvider>
-          <AuthenticationWalletModals
-            isOpen={isModalWaleltOpen}
-            onCancel={() => setIsModalWalletOpen(false)}
-          />
-        </WalletConnectionProvider>
-      </Suspense>
+      {!session?.user && (
+        <>
+          <Button {...PrimaryButton}>Start Now</Button>
+          <Suspense fallback={null}>
+            <WalletConnectionProvider>
+              <AuthenticationWalletModals
+                isOpen={isModalWaleltOpen}
+                onCancel={() => setIsModalWalletOpen(false)}
+              />
+            </WalletConnectionProvider>
+          </Suspense>
+        </>
+      )}
     </>
   );
 }
