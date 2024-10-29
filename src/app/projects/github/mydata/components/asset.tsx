@@ -12,6 +12,7 @@ import { useSnackbar } from 'notistack';
 import { OpenInNew } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { PublicDataAsset } from '@/services/api/models';
+import { createGithubDataAsset } from '../../utils';
 
 type GitHubUser = Endpoints['GET /user']['response']['data'];
 type GitHubRepos = Endpoints['GET /user/repos']['response']['data'];
@@ -111,30 +112,13 @@ export default function Asset({ token: githubToken }: Props) {
     mutationKey: ['github-pda', githubToken, did],
     mutationFn: async () => {
       const claim = await fetchGitHubData(githubToken ?? '');
+      const dataAsset = await createGithubDataAsset(claim, did!);
 
-      const body: components['schemas']['dto.CreateDataAssetRequest'] = {
-        claim: claim as any,
-        // acl: [
-        //   {
-        //     address:
-        //       'did:gatewayid:gateway:7b513c52d35fa50a83e16f3f8b74b46c3ff508ec11aa2cd126d97460cc12db9c',
-        //     roles: [TypesAccessLevel.RoleView],
-        //   },
-        // ],
-        name: 'GitHub Data',
-        data_model_id: 6586373368709223,
-        tags: ['github', 'user'],
-      };
-
-      const { data, error } = await authApi(session!.token).POST(
-        '/data-assets',
-        { body: body as any }
-      );
-      if (error) {
-        throw new Error(error);
+      if (!dataAsset) {
+        throw new Error('Failed to create data asset');
       }
 
-      return data;
+      return dataAsset;
     },
   });
 
