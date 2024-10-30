@@ -7,16 +7,58 @@ import {
 } from '@/services/api/types';
 
 const api = authApi(process.env.GATEWAY_USER_TOKEN!);
-
 const operations: Omit<
   components['schemas']['dto.ComputeRequestCreateRequest'],
   'data_model_id'
 >[] = [
   {
-    compute_field_name: '',
-    compute_operation: DtoComputeRequestCreateRequestCompute_operation.add,
-    title: 'Add',
-    description: 'Add two numbers',
+    compute_field_name: 'languages',
+    compute_operation:
+      DtoComputeRequestCreateRequestCompute_operation.greater_than_or_equal,
+    title: 'Most used language',
+    description:
+      'Show number of devs who have more than 60% of their code in each language',
+  },
+  {
+    compute_field_name: 'repos',
+    compute_operation:
+      DtoComputeRequestCreateRequestCompute_operation.greater_than,
+    title: 'More popular repositories',
+    description:
+      'Compare the number of stars above 20 to identify which projects are more popular',
+  },
+  {
+    compute_field_name: 'repos',
+    compute_operation:
+      DtoComputeRequestCreateRequestCompute_operation.less_than,
+    title: 'Less popular repositories',
+    description:
+      'Compare the number of stars less than 2 to identify which projects are less popular',
+  },
+  {
+    compute_field_name: 'followers',
+    compute_operation:
+      DtoComputeRequestCreateRequestCompute_operation.greater_than,
+    title: 'Famous profiles',
+    description: 'Show number of profiles that have more than 1000 followers',
+  },
+  {
+    compute_field_name: 'totalPullRequests',
+    compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
+    title: 'Sum of all pull requests',
+    description: 'Sum of all pull requests',
+  },
+  {
+    compute_field_name: 'totalCommits',
+    compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
+    title: 'Sum of all commits',
+    description: 'Sum of all commits',
+  },
+  {
+    compute_field_name: 'totalIssues',
+    compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
+    title: 'Sum of all issues',
+    description: 'Sum of all issues',
   },
 ];
 
@@ -25,7 +67,7 @@ export const GET = async (req: NextRequest) => {
   const computeRequests = await Promise.all(
     operations.map(async (operation) => {
       try {
-        const response = await api.POST('/compute-requests', {
+        const { data, error } = await api.POST('/compute-requests', {
           body: {
             ...operation,
             data_model_id: parseInt(
@@ -33,7 +75,11 @@ export const GET = async (req: NextRequest) => {
             ),
           },
         });
-        return response;
+        if (error) {
+          console.error('Error creating compute request:', error);
+          return null;
+        }
+        return data;
       } catch (error) {
         console.error('Error creating compute request:', error);
         return null;
@@ -78,17 +124,25 @@ export const GET = async (req: NextRequest) => {
   // Accept all pdas for all compute requests
   const acceptedRequests = await Promise.all(
     successfulRequests.map(async (computeRequest) => {
-      if (!computeRequest?.data?.id) {
-        return null;
+      if (!computeRequest?.id) {
+        return [];
       }
 
       return await Promise.all(
         pdas.map(async (pda) => {
           try {
-            return await api.POST('/compute-requests/{id}/accept', {
-              params: { path: { id: computeRequest.data.id! } },
-              body: { data_asset_id: pda.id },
-            });
+            const { data, error } = await api.POST(
+              '/compute-requests/{id}/accept',
+              {
+                params: { path: { id: computeRequest.id! } },
+                body: { data_asset_id: pda.id },
+              }
+            );
+            if (error) {
+              console.error('Error accepting compute request:', error);
+              return null;
+            }
+            return data;
           } catch (error) {
             console.error('Error accepting compute request:', error);
             return null;
@@ -98,10 +152,9 @@ export const GET = async (req: NextRequest) => {
     })
   );
 
-  // Filter out failed requests
+  // TODO: Start each compute request
   const successfulAccepts = acceptedRequests
     .filter(Boolean)
-    .flatMap((r) => r?.filter(Boolean).flatMap((r) => r?.data) ?? []);
-
-  return NextResponse.json(successfulAccepts);
+    .flatMap((r) => r?.filter(Boolean).flatMap((r) => r) ?? []);
+  return NextResponse.json({});
 };
