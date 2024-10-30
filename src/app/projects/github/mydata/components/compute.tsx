@@ -1,10 +1,28 @@
-import { CalculateOutlined } from '@mui/icons-material';
-import { Button, Card, Stack, Typography } from '@mui/material';
-import ComputeCard from './compute-card';
-import ComputeOperations from './compute-operations';
+'use client';
+import { LoadingButton } from '@/components/buttons/loading-button';
+import { useMutation } from '@tanstack/react-query';
 import { BiRightArrow } from 'react-icons/bi';
 
+import { CalculateOutlined } from '@mui/icons-material';
+import { Button, Card, Stack, Typography } from '@mui/material';
+
+import ComputeCard from './compute-card';
+import ComputeOperations from './compute-operations';
+
 export default function Compute() {
+  const { isPending, isSuccess, error } = useMutation({
+    mutationKey: ['compute'],
+    mutationFn: async () => {
+      const response = await fetch('/projects/github/api/compute');
+      if (!response.ok) {
+        throw new Error('Failed to fetch compute data');
+      }
+
+      const data = await response.json();
+      return data;
+    },
+  });
+
   return (
     <Stack component={Card} variant="outlined" p={3} gap={3}>
       <Stack direction="row" alignItems="center" gap={2}>
@@ -22,14 +40,26 @@ export default function Compute() {
         <ComputeCard label="Compute requests created" value="23" />
       </Stack>
       <ComputeOperations />
-      <Button
+      <LoadingButton
         variant="contained"
         size="large"
         sx={{ alignSelf: 'flex-start', mt: 3 }}
         endIcon={<BiRightArrow />}
+        disabled={isPending || isSuccess}
+        isLoading={isPending}
       >
         Compute now
-      </Button>
+      </LoadingButton>
+      {error && (
+        <Typography color="error" sx={{ alignSelf: 'flex-start' }}>
+          {error.message}
+        </Typography>
+      )}
+      {isSuccess && (
+        <Typography color="success" sx={{ alignSelf: 'flex-start' }}>
+          Data computed successfully
+        </Typography>
+      )}
     </Stack>
   );
 }
