@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next-nprogress-bar';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import routes from '@/constants/routes';
 import WalletConnectionProvider from '@/services/wallets/wallet-connection-provider';
@@ -30,9 +30,11 @@ export default function LoginButton() {
         }),
   };
 
-  if (session?.user) {
-    router.push(routes.projects.github.mydata);
-  }
+  useEffect(() => {
+    if (session?.user) {
+      router.push(routes.projects.github.mydata);
+    }
+  }, [session, router]);
 
   return (
     <>
