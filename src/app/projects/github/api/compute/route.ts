@@ -15,6 +15,7 @@ const operations: Omit<
     compute_field_name: 'languages',
     compute_operation:
       DtoComputeRequestCreateRequestCompute_operation.greater_than_or_equal,
+    compute_operation_param: 0.6,
     title: 'Most used language',
     description:
       'Show number of devs who have more than 60% of their code in each language',
@@ -23,6 +24,7 @@ const operations: Omit<
     compute_field_name: 'repos',
     compute_operation:
       DtoComputeRequestCreateRequestCompute_operation.greater_than,
+    compute_operation_param: 20,
     title: 'More popular repositories',
     description:
       'Compare the number of stars above 20 to identify which projects are more popular',
@@ -31,6 +33,7 @@ const operations: Omit<
     compute_field_name: 'repos',
     compute_operation:
       DtoComputeRequestCreateRequestCompute_operation.less_than,
+    compute_operation_param: 2,
     title: 'Less popular repositories',
     description:
       'Compare the number of stars less than 2 to identify which projects are less popular',
@@ -39,6 +42,7 @@ const operations: Omit<
     compute_field_name: 'followers',
     compute_operation:
       DtoComputeRequestCreateRequestCompute_operation.greater_than,
+    compute_operation_param: 1000,
     title: 'Famous profiles',
     description: 'Show number of profiles that have more than 1000 followers',
   },
