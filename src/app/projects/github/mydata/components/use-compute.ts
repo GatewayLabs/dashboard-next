@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
 type State = {
@@ -11,6 +12,7 @@ type State = {
 };
 
 export default function useCompute() {
+  const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState<State>({
     isLoading: false,
@@ -38,6 +40,7 @@ export default function useCompute() {
               isSuccess: true,
               label: 'Operation executed successfully',
             });
+            queryClient.refetchQueries({ queryKey: ['compute-created'] });
             break;
           }
 

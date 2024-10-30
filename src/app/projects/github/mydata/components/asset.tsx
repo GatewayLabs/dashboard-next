@@ -6,7 +6,7 @@ import routes from '@/constants/routes';
 import { authApi } from '@/services/api/api';
 import { PublicDataAsset } from '@/services/api/models';
 import { Endpoints } from '@octokit/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
 import { OpenInNew } from '@mui/icons-material';
@@ -113,6 +113,8 @@ export default function Asset({ token: githubToken }: Props) {
     enabled: !!session,
   });
 
+  const queryClient = useQueryClient();
+
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ['github-pda', githubToken, did],
     mutationFn: async () => {
@@ -133,6 +135,7 @@ export default function Asset({ token: githubToken }: Props) {
     try {
       await mutateAsync();
       refetch();
+      queryClient.refetchQueries({ queryKey: ['compute-available-assets'] });
     } catch (error: any) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }
