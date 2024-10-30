@@ -16,41 +16,6 @@ const operations: Omit<
   'data_model_id'
 >[] = [
   {
-    compute_field_name: 'languages',
-    compute_operation:
-      DtoComputeRequestCreateRequestCompute_operation.greater_than_or_equal,
-    compute_operation_param: 0.6,
-    title: 'Most used language',
-    description:
-      'Show number of devs who have more than 60% of their code in each language',
-  },
-  {
-    compute_field_name: 'repos',
-    compute_operation:
-      DtoComputeRequestCreateRequestCompute_operation.greater_than,
-    compute_operation_param: 20,
-    title: 'More popular repositories',
-    description:
-      'Compare the number of stars above 20 to identify which projects are more popular',
-  },
-  {
-    compute_field_name: 'repos',
-    compute_operation:
-      DtoComputeRequestCreateRequestCompute_operation.less_than,
-    compute_operation_param: 2,
-    title: 'Less popular repositories',
-    description:
-      'Compare the number of stars less than 2 to identify which projects are less popular',
-  },
-  {
-    compute_field_name: 'followers',
-    compute_operation:
-      DtoComputeRequestCreateRequestCompute_operation.greater_than,
-    compute_operation_param: 1000,
-    title: 'Famous profiles',
-    description: 'Show number of profiles that have more than 1000 followers',
-  },
-  {
     compute_field_name: 'totalPullRequests',
     compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
     title: 'Sum of all pull requests',
@@ -69,6 +34,28 @@ const operations: Omit<
     description: 'Sum of all issues',
   },
 ];
+
+const languageVariables = [
+  'repoInJavaScript',
+  'repoInPython',
+  'repoInJava',
+  'repoInTypescript',
+  'repoInCSharp',
+  'repoInCPP',
+  'repoInPHP',
+  'repoInShell',
+  'repoInC',
+  'repoInRuby',
+];
+
+languageVariables.forEach((language) => {
+  operations.push({
+    compute_field_name: language,
+    compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
+    title: `Sum of all projects in ${language}`,
+    description: `Sum of all projects in ${language}`,
+  });
+});
 
 async function createComputeRequests(): Promise<ComputeRequest[]> {
   const computeRequests = await Promise.all(
@@ -111,7 +98,7 @@ async function createComputeRequests(): Promise<ComputeRequest[]> {
 }
 
 async function getDataAssets(): Promise<DataAsset[]> {
-  const pdas: components['schemas']['dto.PublicDataAsset'][] = [];
+  const pdas: DataAsset[] = [];
   let page = 1;
   while (page > -1) {
     try {
@@ -163,34 +150,29 @@ async function* executeComputeRequests() {
         return [];
       }
 
-      return await Promise.all(
-        pdas.map(async (pda) => {
-          try {
-            const { data, error } = await api.POST(
-              '/compute-requests/{id}/accept',
-              {
-                params: { path: { id: computeRequest.id! } },
-                body: { data_asset_id: pda.id },
-              }
-            );
-            if (error) {
-              console.error('Error accepting compute request:', error);
-              return null;
-            }
-            return data;
-          } catch (error) {
-            console.error('Error accepting compute request:', error);
-            return null;
+      try {
+        const { data, error } = await api.POST(
+          '/compute-requests/{id}/accept',
+          {
+            params: { path: { id: computeRequest.id! } },
+            body: { data_asset_ids: pdas.map((pda) => pda.id) } as any,
           }
-        })
-      );
+        );
+        if (error) {
+          console.error('Error accepting compute request:', error);
+          return null;
+        }
+        return data;
+      } catch (error) {
+        console.error('Error accepting compute request:', error);
+        return null;
+      }
     })
   );
 
   // TODO: Start each compute request
-  const successfulAccepts = acceptedRequests
-    .filter(Boolean)
-    .flatMap((r) => r?.filter(Boolean).flatMap((r) => r) ?? []);
+  const successfulAccepts = acceptedRequests.filter(Boolean);
+
   yield encoder.encode('Compute encrypted data');
 
   //TODO: remove

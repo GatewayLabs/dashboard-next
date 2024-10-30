@@ -13,72 +13,104 @@ import { OpenInNew } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
 import { createGithubDataAsset } from '../../utils';
+import { PercentageLanguageCount, PercentageLanguageKey } from './types';
 
 type GitHubUser = Endpoints['GET /user']['response']['data'];
 type GitHubRepos = Endpoints['GET /user/repos']['response']['data'];
 type GitHubIssues = Endpoints['GET /search/issues']['response']['data'];
 type GitHubCommits = Endpoints['GET /search/commits']['response']['data'];
 type GitHubPullRequests = Endpoints['GET /search/issues']['response']['data'];
-
 const fetchGitHubData = async (accessToken: string) => {
   const headers = { Authorization: `Bearer ${accessToken}` };
 
-  const userDataResponse = await fetch('https://api.github.com/user', {
-    headers,
-  });
-  const userData: GitHubUser = await userDataResponse.json();
+  try {
+    const userDataResponse = await fetch('https://api.github.com/user', {
+      headers,
+    });
+    if (!userDataResponse.ok) throw new Error('Failed to fetch user data');
+    const userData: GitHubUser = await userDataResponse.json();
 
-  const reposResponse = await fetch('https://api.github.com/user/repos', {
-    headers,
-  });
-  const reposData: GitHubRepos = await reposResponse.json();
+    const reposResponse = await fetch('https://api.github.com/user/repos', {
+      headers,
+    });
+    if (!reposResponse.ok) throw new Error('Failed to fetch repositories');
+    const reposData: GitHubRepos = await reposResponse.json();
 
-  const repoStats = reposData.map((repo) => ({
-    name: repo.name,
-    stars: repo.stargazers_count,
-    language: repo.language,
-  }));
-  const totalStars = repoStats.reduce((acc, repo) => acc + repo.stars, 0);
-  const languages = [
-    ...new Set(repoStats.map((repo) => repo.language).filter(Boolean)),
-  ];
+    const repoStats = reposData.map((repo) => ({
+      name: repo.name,
+      stars: repo.stargazers_count,
+      language: repo.language,
+    }));
+    const totalRepos = repoStats.length;
 
-  const issuesResponse = await fetch(
-    `https://api.github.com/search/issues?q=author:${userData.login}+type:issue`,
-    { headers }
-  );
-  const issuesData: GitHubIssues = await issuesResponse.json();
-  const totalIssues = issuesData.total_count;
+    const languages = [
+      ...new Set(repoStats.map((repo) => repo.language).filter(Boolean)),
+    ];
 
-  const pullRequestsResponse = await fetch(
-    `https://api.github.com/search/issues?q=author:${userData.login}+type:pr`,
-    { headers }
-  );
-  const pullRequestsData: GitHubPullRequests =
-    await pullRequestsResponse.json();
-  const totalPullRequests = pullRequestsData.total_count;
+    const issuesResponse = await fetch(
+      `https://api.github.com/search/issues?q=author:${userData.login}+type:issue`,
+      { headers }
+    );
+    if (!issuesResponse.ok) throw new Error('Failed to fetch issues');
+    const issuesData: GitHubIssues = await issuesResponse.json();
+    const totalIssues = issuesData.total_count;
 
-  const commitsResponse = await fetch(
-    `https://api.github.com/search/commits?q=author:${userData.login}`,
-    {
-      headers: {
-        ...headers,
-        Accept: 'application/vnd.github.cloak-preview',
+    const pullRequestsResponse = await fetch(
+      `https://api.github.com/search/issues?q=author:${userData.login}+type:pr`,
+      { headers }
+    );
+    if (!pullRequestsResponse.ok)
+      throw new Error('Failed to fetch pull requests');
+    const pullRequestsData: GitHubPullRequests =
+      await pullRequestsResponse.json();
+    const totalPullRequests = pullRequestsData.total_count;
+
+    const commitsResponse = await fetch(
+      `https://api.github.com/search/commits?q=author:${userData.login}`,
+      {
+        headers: {
+          ...headers,
+          Accept: 'application/vnd.github.cloak-preview',
+        },
+      }
+    );
+    if (!commitsResponse.ok) throw new Error('Failed to fetch commits');
+    const commitsData: GitHubCommits = await commitsResponse.json();
+    const totalCommits = commitsData.total_count;
+
+    const percentageLanguageCount = languages.reduce(
+      (acc, language) => {
+        const key = `percentageOfRepoIn${language}` as PercentageLanguageKey;
+        const count = repoStats.filter(
+          (repo) => repo.language === language
+        ).length;
+        acc[key] = (count / totalRepos) * 100;
+        return acc;
       },
-    }
-  );
-  const commitsData: GitHubCommits = await commitsResponse.json();
-  const totalCommits = commitsData.total_count;
+      {
+        percentageOfRepoInJavaScript: 0,
+        percentageOfRepoInPython: 0,
+        percentageOfRepoInJava: 0,
+        percentageOfRepoInTypescript: 0,
+        percentageOfRepoInCSharp: 0,
+        percentageOfRepoInCPP: 0,
+        percentageOfRepoInPHP: 0,
+        percentageOfRepoInShell: 0,
+        percentageOfRepoInC: 0,
+        percentageOfRepoInRuby: 0,
+      } as PercentageLanguageCount
+    );
 
-  return {
-    followers: userData.followers,
-    totalPullRequests,
-    totalCommits,
-    totalIssues,
-    repos: repoStats,
-    totalStars,
-    languages,
-  };
+    return {
+      totalPullRequests,
+      totalCommits,
+      totalIssues,
+      ...percentageLanguageCount,
+    };
+  } catch (error) {
+    console.error('Error fetching GitHub data:', error);
+    throw error;
+  }
 };
 
 type Props = {
