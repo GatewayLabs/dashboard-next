@@ -1,10 +1,10 @@
 import { brandColors } from '@/theme/config/brand';
 
-import { Card, Typography } from '@mui/material';
+import { Card, Skeleton, Typography } from '@mui/material';
 
 type Props = {
   label: string;
-  value: string;
+  value?: string;
 };
 
 export default function ComputeCard({ label, value }: Props) {
@@ -36,7 +36,7 @@ export default function ComputeCard({ label, value }: Props) {
           color: theme.palette.primary.dark,
         })}
       >
-        {value}
+        {value ?? <Skeleton variant="text" width={100} />}
       </Typography>
     </Card>
   );

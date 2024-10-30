@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { BiRightArrow } from 'react-icons/bi';
 
 import { CalculateOutlined } from '@mui/icons-material';
@@ -18,6 +19,22 @@ import useCompute from './use-compute';
 
 export default function Compute() {
   const { isLoading, isSuccess, label, onCompute } = useCompute();
+  const { data: availableAssets } = useQuery({
+    queryKey: ['compute-available-assets'],
+    queryFn: async () => {
+      const res = await fetch('/projects/github/api/available-assets');
+      const data = (await res.json()) as { total_items: number };
+      return data.total_items.toString();
+    },
+  });
+  const { data: computedCreated } = useQuery({
+    queryKey: ['compute-created'],
+    queryFn: async () => {
+      const res = await fetch('/projects/github/api/computes-created');
+      const data = (await res.json()) as { total_items: number };
+      return data.total_items.toString();
+    },
+  });
 
   return (
     <Stack component={Card} variant="outlined" p={3} gap={3}>
@@ -32,8 +49,8 @@ export default function Compute() {
         </Stack>
       </Stack>
       <Stack gap={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
-        <ComputeCard label="Available data assets" value="131" />
-        <ComputeCard label="Compute requests created" value="23" />
+        <ComputeCard label="Available data assets" value={availableAssets} />
+        <ComputeCard label="Compute requests created" value={computedCreated} />
       </Stack>
       {!isLoading && <ComputeOperations data={isSuccess} />}
       {isLoading && (
