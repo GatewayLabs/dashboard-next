@@ -28,7 +28,14 @@ export default function ComputeOperationsItem({
         }}
       >
         <Typography variant="body1">{label}</Typography>
-        {description && <Typography variant="body2">{description}</Typography>}
+        {description && (
+          <Typography
+            variant="body2"
+            sx={(theme) => ({ color: theme.palette.text.secondary })}
+          >
+            {description}
+          </Typography>
+        )}
       </Stack>
       {value && (
         <Typography variant="body1" sx={{ fontWeight: 700 }}>

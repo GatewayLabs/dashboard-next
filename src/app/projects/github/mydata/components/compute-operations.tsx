@@ -1,7 +1,7 @@
 import { Card, Divider, Stack, Typography } from '@mui/material';
 
 import ComputeOperationsItem from './compute-operations-item';
-import { repoLanguages } from './types';
+import { languages } from './types';
 
 type Props = {
   data: boolean;
@@ -34,26 +34,30 @@ export default function ComputeOperations({ data }: Props) {
             label="Most used language"
             description="Show number of devs who have more than 60% of their code in each language"
           />
-          {repoLanguages.map((language) => (
-            <Stack
-              key={language}
-              direction="row"
-              justifyContent="space-between"
-            >
-              <Typography variant="body1" fontWeight="bold">
-                {language}
-              </Typography>
-              <Typography>40</Typography>
-            </Stack>
-          ))}
+          <Stack mt={1}>
+            {languages.map((language) => (
+              <Stack
+                key={language}
+                direction="row"
+                justifyContent="space-between"
+                px={3}
+                mt={1}
+              >
+                <Typography variant="body1">{language}</Typography>
+                <Typography fontWeight="bold">
+                  {data ? 3 : undefined}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
         </Stack>
         <ComputeOperationsItem
           label="Sum of all pull requests"
-          value={data ? 40 : undefined}
+          value={data ? 21 : undefined}
         />
         <ComputeOperationsItem
           label="Sum of all commits"
-          value={data ? 40 : undefined}
+          value={data ? 17 : undefined}
         />
         <ComputeOperationsItem
           label="Sum of all issues"

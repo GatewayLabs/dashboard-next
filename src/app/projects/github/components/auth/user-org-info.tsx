@@ -26,7 +26,11 @@ export default function UserOrgInfo({ id, image, name, gatewayId }: Props) {
           {hasName ? name : `@${gatewayId}`}
         </Typography>
         {hasName && (
-          <Typography component="span" variant="caption">
+          <Typography
+            component="span"
+            variant="caption"
+            sx={(theme) => ({ color: theme.palette.text.secondary })}
+          >
             {gatewayId}
           </Typography>
         )}

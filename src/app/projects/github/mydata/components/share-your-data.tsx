@@ -39,7 +39,11 @@ function ShareYourData({ searchParamsToken }: Props) {
           <Typography variant="subtitle1">
             Connect your Github account
           </Typography>
-          <Typography variant="body2" mb={3}>
+          <Typography
+            variant="body2"
+            mb={3}
+            sx={(theme) => ({ color: theme.palette.text.secondary })}
+          >
             Authorize the Gateway to access your data, you can cancel it
             whenever you want.
           </Typography>
@@ -59,7 +63,11 @@ function ShareYourData({ searchParamsToken }: Props) {
         </Stack>
         <Stack p={3} alignItems="flex-start">
           <Typography variant="subtitle1">Create a data asset</Typography>
-          <Typography variant="body2" mb={3}>
+          <Typography
+            variant="body2"
+            mb={3}
+            sx={(theme) => ({ color: theme.palette.text.secondary })}
+          >
             We'll take the GitHub data and create a structured data asset to
             make available for private computation
           </Typography>

@@ -40,9 +40,12 @@ export default function Compute() {
     <Stack component={Card} variant="outlined" p={3} gap={3}>
       <Stack direction="row" alignItems="center" gap={2}>
         <CalculateOutlined color="primary" sx={{ fontSize: 40 }} />
-        <Stack direction="column" gap={0.5}>
+        <Stack direction="column">
           <Typography variant="h5">Compute data</Typography>
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            sx={(theme) => ({ color: theme.palette.text.secondary })}
+          >
             All computations are performed on encrypted data using Garbled
             Circuits.
           </Typography>
