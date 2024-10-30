@@ -1,8 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next-nprogress-bar';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import routes from '@/constants/routes';
 import WalletConnectionProvider from '@/services/wallets/wallet-connection-provider';
@@ -14,7 +13,6 @@ import AuthenticationWalletModals from '../../../../components/authentication-wa
 export default function LoginButton() {
   const [isModalWaleltOpen, setIsModalWalletOpen] = useState(false);
   const { status } = useSession();
-  const router = useRouter();
   const { data: session } = useSession();
 
   const PrimaryButton = {
@@ -29,12 +27,6 @@ export default function LoginButton() {
           },
         }),
   };
-
-  useEffect(() => {
-    if (session?.user) {
-      router.push(routes.projects.github.mydata);
-    }
-  }, [session, router]);
 
   return (
     <>
