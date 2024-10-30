@@ -76,12 +76,20 @@ export const GET = async (req: NextRequest) => {
           },
         });
         if (error) {
-          console.error('Error creating compute request:', error);
+          console.error(
+            'Error creating compute request:',
+            operation.title,
+            error
+          );
           return null;
         }
         return data;
       } catch (error) {
-        console.error('Error creating compute request:', error);
+        console.error(
+          'Error creating compute request:',
+          operation.title,
+          error
+        );
         return null;
       }
     })
