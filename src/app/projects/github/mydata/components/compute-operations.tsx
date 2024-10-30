@@ -49,7 +49,10 @@ export default function ComputeOperations() {
         <ComputeOperationsItem label="Sum of all commits" value={40} />
         <ComputeOperationsItem label="Sum of all issues" value={40} />
       </Stack>
-      <CardLoading />
+      <CardLoading
+        label="Creating a compute request"
+        description="This will take a while"
+      />
     </Stack>
   );
 }

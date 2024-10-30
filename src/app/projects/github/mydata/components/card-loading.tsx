@@ -1,6 +1,11 @@
 import { CircularProgress, Stack, Typography } from '@mui/material';
 
-export default function CardLoading() {
+type Props = {
+  label: string;
+  description: string;
+};
+
+export default function CardLoading({ label, description }: Props) {
   return (
     <Stack
       direction="column"
@@ -17,8 +22,8 @@ export default function CardLoading() {
       }}
     >
       <CircularProgress size={48} sx={{ color: 'primary.main', mb: 2 }} />
-      <Typography variant="subtitle1">Creating a compute request</Typography>
-      <Typography variant="body2">This will take a while</Typography>
+      <Typography variant="subtitle1">{label}</Typography>
+      <Typography variant="body2">{description}</Typography>
     </Stack>
   );
 }
