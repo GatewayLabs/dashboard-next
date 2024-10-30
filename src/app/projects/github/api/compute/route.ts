@@ -6,7 +6,11 @@ import {
   DtoComputeRequestCreateRequestCompute_operation,
 } from '@/services/api/types';
 
+type ComputeRequest = components['schemas']['dto.ComputeRequestResponse'];
+type DataAsset = components['schemas']['dto.PublicDataAsset'];
+
 const api = authApi(process.env.GATEWAY_USER_TOKEN!);
+
 const operations: Omit<
   components['schemas']['dto.ComputeRequestCreateRequest'],
   'data_model_id'
@@ -66,8 +70,7 @@ const operations: Omit<
   },
 ];
 
-export const GET = async (req: NextRequest) => {
-  // Create compute requests for each operation
+async function createComputeRequests(): Promise<ComputeRequest[]> {
   const computeRequests = await Promise.all(
     operations.map(async (operation) => {
       try {
@@ -87,6 +90,9 @@ export const GET = async (req: NextRequest) => {
           );
           return null;
         }
+
+        console.log('Compute request created:', operation.title);
+
         return data;
       } catch (error) {
         console.error(
@@ -100,9 +106,11 @@ export const GET = async (req: NextRequest) => {
   );
 
   // Filter out failed requests
-  const successfulRequests = computeRequests.filter(Boolean);
+  const successfulRequests = computeRequests.filter((c) => !!c);
+  return successfulRequests;
+}
 
-  // Get all pdas from data_model_id
+async function getDataAssets(): Promise<DataAsset[]> {
   const pdas: components['schemas']['dto.PublicDataAsset'][] = [];
   let page = 1;
   while (page > -1) {
@@ -133,9 +141,24 @@ export const GET = async (req: NextRequest) => {
     }
   }
 
+  return pdas;
+}
+
+const encoder = new TextEncoder();
+
+async function* executeComputeRequests() {
+  yield encoder.encode('Creating compute requests');
+  // Create compute requests for each operation
+  const computeRequest = await createComputeRequests();
+  // yield computeRequest created
+
+  // Get all pdas from data_model_id
+  const pdas = await getDataAssets();
+  // yield pdas fetched
+
   // Accept all pdas for all compute requests
   const acceptedRequests = await Promise.all(
-    successfulRequests.map(async (computeRequest) => {
+    computeRequest.map(async (computeRequest) => {
       if (!computeRequest?.id) {
         return [];
       }
@@ -168,5 +191,29 @@ export const GET = async (req: NextRequest) => {
   const successfulAccepts = acceptedRequests
     .filter(Boolean)
     .flatMap((r) => r?.filter(Boolean).flatMap((r) => r) ?? []);
-  return NextResponse.json({});
+  yield encoder.encode('Compute encrypted data');
+
+  //TODO: remove
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+}
+
+function iteratorToStream(iterator: any) {
+  return new ReadableStream({
+    async pull(controller) {
+      const { value, done } = await iterator.next();
+
+      if (done) {
+        controller.close();
+      } else {
+        controller.enqueue(value);
+      }
+    },
+  });
+}
+
+export const GET = async (req: NextRequest) => {
+  const execution = executeComputeRequests();
+  const stream = iteratorToStream(execution);
+
+  return new Response(stream);
 };

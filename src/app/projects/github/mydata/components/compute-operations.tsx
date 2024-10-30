@@ -1,9 +1,12 @@
 import { Card, Divider, Stack, Typography } from '@mui/material';
 
-import CardLoading from './card-loading';
 import ComputeOperationsItem from './compute-operations-item';
 
-export default function ComputeOperations() {
+type Props = {
+  data: boolean;
+};
+
+export default function ComputeOperations({ data }: Props) {
   return (
     <Stack
       component={Card}
@@ -28,31 +31,36 @@ export default function ComputeOperations() {
         <ComputeOperationsItem
           label="Most used language"
           description="Show number of devs who have more than 60% of their code in each language"
-          value={5}
+          value={data ? 5 : undefined}
         />
         <ComputeOperationsItem
           label="More popular repositories"
           description="Compare the number of stars above 20 to identify which projects are more popular"
-          value={5}
+          value={data ? 5 : undefined}
         />
         <ComputeOperationsItem
           label="Less popular repositories"
           description="Compare the number of stars less than 2 to identify which projects are less popular"
-          value={5}
+          value={data ? 5 : undefined}
         />
         <ComputeOperationsItem
           label="Famous profiles"
           description="Show number of profiles that have more than 1000 followers"
-          value={5}
+          value={data ? 5 : undefined}
         />
-        <ComputeOperationsItem label="Sum of all pull requests" value={40} />
-        <ComputeOperationsItem label="Sum of all commits" value={40} />
-        <ComputeOperationsItem label="Sum of all issues" value={40} />
+        <ComputeOperationsItem
+          label="Sum of all pull requests"
+          value={data ? 40 : undefined}
+        />
+        <ComputeOperationsItem
+          label="Sum of all commits"
+          value={data ? 40 : undefined}
+        />
+        <ComputeOperationsItem
+          label="Sum of all issues"
+          value={data ? 40 : undefined}
+        />
       </Stack>
-      <CardLoading
-        label="Creating a compute request"
-        description="This will take a while"
-      />
     </Stack>
   );
 }
