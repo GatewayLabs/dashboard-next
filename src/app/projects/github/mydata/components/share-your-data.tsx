@@ -1,14 +1,16 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
-import { IosShare } from '@mui/icons-material';
-import { Button, Card, Divider, Typography } from '@mui/material';
-import { Stack } from '@mui/system';
-import { FaGithub } from 'react-icons/fa';
-
 import { useEffect } from 'react';
 
 import { useLocalStorageValue } from '@react-hookz/web';
-import User from './user';
+import { FaGithub } from 'react-icons/fa';
+
+import { IosShare } from '@mui/icons-material';
+import { Button, Card, Divider, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
+
 import Asset from './asset';
+import User from './user';
 
 type Props = {
   searchParamsToken: string | undefined;

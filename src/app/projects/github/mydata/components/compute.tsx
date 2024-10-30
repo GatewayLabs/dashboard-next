@@ -1,16 +1,18 @@
 'use client';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import { BiRightArrow } from 'react-icons/bi';
 
 import { CalculateOutlined } from '@mui/icons-material';
-import { Button, Card, Stack, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 
 import ComputeCard from './compute-card';
 import ComputeOperations from './compute-operations';
 
 export default function Compute() {
-  const { isPending, isSuccess, error } = useMutation({
+  const { enqueueSnackbar } = useSnackbar();
+  const { isPending, isSuccess, error, mutateAsync } = useMutation({
     mutationKey: ['compute'],
     mutationFn: async () => {
       const response = await fetch('/projects/github/api/compute');
@@ -22,6 +24,14 @@ export default function Compute() {
       return data;
     },
   });
+
+  const onCompute = async () => {
+    try {
+      await mutateAsync();
+    } catch (error: any) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
 
   return (
     <Stack component={Card} variant="outlined" p={3} gap={3}>
@@ -45,8 +55,9 @@ export default function Compute() {
         size="large"
         sx={{ alignSelf: 'flex-start', mt: 3 }}
         endIcon={<BiRightArrow />}
-        disabled={isPending || isSuccess}
+        disabled={isPending}
         isLoading={isPending}
+        onClick={() => onCompute()}
       >
         Compute now
       </LoadingButton>
