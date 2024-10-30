@@ -1,9 +1,26 @@
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next-nprogress-bar';
+import { useEffect } from 'react';
+
+import routes from '@/constants/routes';
+
 import { Stack } from '@mui/system';
 
 import GithubLayout from './components/github-layout';
 import TextData from './components/text-data';
 
 export default function GithubProject() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push(routes.projects.github.mydata);
+    }
+  }, [session, router]);
+
   return (
     <GithubLayout>
       <Stack direction={{ xs: 'column', md: 'row' }} gap={4} mb={4}>
