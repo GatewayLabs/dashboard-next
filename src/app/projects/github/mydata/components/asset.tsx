@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import routes from '@/constants/routes';
 import { authApi } from '@/services/api/api';
-import { components, TypesAccessLevel } from '@/services/api/types';
+import { PublicDataAsset } from '@/services/api/models';
 import { Endpoints } from '@octokit/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
 import { OpenInNew } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { PublicDataAsset } from '@/services/api/models';
+
 import { createGithubDataAsset } from '../../utils';
 
 type GitHubUser = Endpoints['GET /user']['response']['data'];
@@ -92,7 +92,7 @@ export default function Asset({ token: githubToken }: Props) {
   const githubDataModelId = process.env.NEXT_PUBLIC_GITHUB_DATA_MODEL_ID;
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ['github-data-asset', token],
+    queryKey: ['github-data-asset', token, githubDataModelId],
     queryFn: async () => {
       if (!githubDataModelId) {
         throw new Error('Github data model id not found');

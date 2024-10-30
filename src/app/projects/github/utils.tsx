@@ -1,5 +1,5 @@
 export const createGithubDataAsset = async (claim: any, did: string) => {
-  const response = await fetch('/api/github', {
+  const response = await fetch('/projects/github/api/create-asset', {
     method: 'POST',
     body: JSON.stringify({ claim, did }),
   });
