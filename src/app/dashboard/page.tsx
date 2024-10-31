@@ -1,3 +1,7 @@
+import { redirect, RedirectType } from 'next/navigation';
+
+import routes from '@/constants/routes';
+
 export default function DashboardHome() {
-  return <div>Dashboard Home</div>;
+  redirect(routes.dashboard.storage, RedirectType.replace);
 }
