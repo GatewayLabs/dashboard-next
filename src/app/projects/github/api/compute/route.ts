@@ -5,27 +5,10 @@ import {
 } from '@/services/api/types';
 
 import { repoLanguages } from '../../mydata/components/types';
+import { getGatewayUserToken } from '../utils';
 
 type ComputeRequest = components['schemas']['dto.ComputeRequestResponse'];
 type DataAsset = components['schemas']['dto.PublicDataAsset'];
-
-let gatewayUserToken: string | null = null;
-
-async function getGatewayUserToken(): Promise<string> {
-  if (gatewayUserToken) {
-    return gatewayUserToken;
-  }
-
-  const url = process.env.NEXTAUTH_URL;
-  const gatewayLogin = await fetch(`${url}/projects/github/api/login-gateway`);
-  const data = (await gatewayLogin.json()) as { token: string };
-  if (!data || !data.token) {
-    throw new Error('Gateway user token not found');
-  }
-
-  gatewayUserToken = data.token;
-  return gatewayUserToken;
-}
 
 const operations: Omit<
   components['schemas']['dto.ComputeRequestCreateRequest'],
