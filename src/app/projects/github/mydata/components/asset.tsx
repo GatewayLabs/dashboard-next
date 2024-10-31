@@ -181,28 +181,28 @@ export default function Asset({ token: githubToken }: Props) {
     );
   }
 
-  if (data) {
-    return (
-      <Button
-        component={Link}
-        href={routes.dashboard.storageAsset(data.id)}
-        variant="outlined"
-        size="large"
-        endIcon={<OpenInNew />}
-      >
-        Open data asset
-      </Button>
-    );
-  }
-
   return (
-    <LoadingButton
-      variant="contained"
-      size="large"
-      disabled={isPending || !githubToken}
-      onClick={onCreateDataAsset}
-    >
-      Create data asset
-    </LoadingButton>
+    <>
+      {data ? (
+        <Button
+          component={Link}
+          href={routes.dashboard.storageAsset(data.id)}
+          variant="outlined"
+          size="large"
+          endIcon={<OpenInNew />}
+        >
+          Open data asset
+        </Button>
+      ) : (
+        <LoadingButton
+          variant="contained"
+          size="large"
+          disabled={isPending || !githubToken}
+          onClick={onCreateDataAsset}
+        >
+          Create data asset
+        </LoadingButton>
+      )}
+    </>
   );
 }
