@@ -5,6 +5,11 @@ export async function getGatewayUserToken(): Promise<string | null> {
     return gatewayUserToken;
   }
 
+  if (process.env.SKIP_AUTH_FETCH_DURING_BUILD === 'true') {
+    console.warn('Skipping gateway token fetch during build');
+    return '';
+  }
+
   const baseURL = process.env.NEXTAUTH_URL;
   if (!baseURL) {
     console.error(
