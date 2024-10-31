@@ -20,7 +20,7 @@ export default function ComputeOperations({ data }: Props) {
       }}
     >
       <Typography variant="subtitle1" p={3}>
-        What will be computed
+        {data ? 'Results' : 'What will be computed'}
       </Typography>
       <Stack
         direction="column"

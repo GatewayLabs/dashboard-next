@@ -39,7 +39,7 @@ export default function Compute() {
 
   return (
     <Stack component={Card} variant="outlined" p={3} gap={3}>
-      <Stack direction="row" alignItems="center" gap={2}>
+      <Stack direction="row" alignItems="center" gap={2} mb={3}>
         <CalculateOutlined color="primary" sx={{ fontSize: 40 }} />
         <Stack direction="column">
           <Typography variant="h5">Compute data</Typography>
