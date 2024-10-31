@@ -1,5 +1,3 @@
-import { brandColors } from '@/theme/config/brand';
-
 import { Card, Skeleton, Typography } from '@mui/material';
 
 type Props = {
@@ -12,7 +10,7 @@ export default function ComputeCard({ label, value }: Props) {
     <Card
       sx={{
         flexGrow: 1,
-        backgroundColor: brandColors.primaryLight,
+        backgroundColor: 'primary.100',
         boxShadow: 'none',
         justifyContent: 'space-between',
         display: 'flex',

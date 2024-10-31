@@ -1,7 +1,5 @@
 import Image from 'next/image';
 
-import { brandColors } from '@/theme/config/brand';
-
 import { Box, Card, Chip, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 
@@ -21,7 +19,7 @@ export default function Hero() {
       <Card
         sx={{
           flexGrow: 1,
-          backgroundColor: brandColors.primaryLight,
+          backgroundColor: 'primary.100',
           boxShadow: 'none',
           justifyContent: 'space-between',
           display: 'flex',
