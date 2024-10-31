@@ -7,6 +7,9 @@ import { getGatewayUserToken } from '../utils';
 export const GET = async () => {
   try {
     const gatewayUserToken = await getGatewayUserToken();
+    if (!gatewayUserToken) {
+      throw new Error('Gateway user token is null');
+    }
     const api = authApi(gatewayUserToken, { cache: 'no-cache' });
     const { data, error } = await api.GET('/compute-requests/me');
 

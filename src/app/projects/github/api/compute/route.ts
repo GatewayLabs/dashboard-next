@@ -46,6 +46,9 @@ repoLanguages.forEach((language) => {
 
 async function createComputeRequests(): Promise<ComputeRequest[]> {
   const gatewayUserToken = await getGatewayUserToken();
+  if (!gatewayUserToken) {
+    throw new Error('Gateway user token is null');
+  }
   const api = authApi(gatewayUserToken);
 
   const computeRequests = await Promise.all(
@@ -89,6 +92,9 @@ async function createComputeRequests(): Promise<ComputeRequest[]> {
 
 async function getDataAssets(): Promise<DataAsset[]> {
   const gatewayUserToken = await getGatewayUserToken();
+  if (!gatewayUserToken) {
+    throw new Error('Gateway user token is null');
+  }
   const api = authApi(gatewayUserToken);
   const pdas: DataAsset[] = [];
   let page = 1;
@@ -127,6 +133,9 @@ const encoder = new TextEncoder();
 
 async function* executeComputeRequests() {
   const gatewayUserToken = await getGatewayUserToken();
+  if (!gatewayUserToken) {
+    throw new Error('Gateway user token is null');
+  }
   const api = authApi(gatewayUserToken);
   yield encoder.encode('Creating compute requests');
 

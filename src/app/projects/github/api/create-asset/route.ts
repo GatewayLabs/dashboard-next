@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
     };
 
     const gatewayUserToken = await getGatewayUserToken();
+    if (!gatewayUserToken) {
+      throw new Error('Gateway user token is null');
+    }
     const { data, error } = await authApi(gatewayUserToken).POST(
       '/data-assets',
       {
