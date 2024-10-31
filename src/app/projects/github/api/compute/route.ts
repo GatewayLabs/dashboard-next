@@ -6,6 +6,8 @@ import {
   DtoComputeRequestCreateRequestCompute_operation,
 } from '@/services/api/types';
 
+import { repoLanguages } from '../../mydata/components/types';
+
 type ComputeRequest = components['schemas']['dto.ComputeRequestResponse'];
 type DataAsset = components['schemas']['dto.PublicDataAsset'];
 
@@ -35,25 +37,13 @@ const operations: Omit<
   },
 ];
 
-const languageVariables = [
-  'repoInJavaScript',
-  'repoInPython',
-  'repoInJava',
-  'repoInTypescript',
-  'repoInCSharp',
-  'repoInCPP',
-  'repoInPHP',
-  'repoInShell',
-  'repoInC',
-  'repoInRuby',
-];
-
-languageVariables.forEach((language) => {
+repoLanguages.forEach((language) => {
+  const languageWithoutPercentage = language.replace('percentageOfRepoIn', '');
   operations.push({
     compute_field_name: language,
     compute_operation: DtoComputeRequestCreateRequestCompute_operation.sum,
-    title: `Sum of all projects in ${language}`,
-    description: `Sum of all projects in ${language}`,
+    title: `Sum of all projects in ${languageWithoutPercentage}`,
+    description: `Sum of all projects in ${languageWithoutPercentage}`,
   });
 });
 
