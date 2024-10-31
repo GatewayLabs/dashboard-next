@@ -184,7 +184,7 @@ export default function Asset({ token: githubToken }: Props) {
   if (data) {
     return (
       <>
-        <Stack direction="row" gap={2}>
+        <Stack gap={2} sx={{ xs: 'column', md: 'row' }}>
           <Button
             component={Link}
             href={routes.dashboard.storageAsset(data.id)}
@@ -208,15 +208,4 @@ export default function Asset({ token: githubToken }: Props) {
       </>
     );
   }
-
-  return (
-    <LoadingButton
-      variant="contained"
-      size="large"
-      disabled={isPending || !githubToken}
-      onClick={onCreateDataAsset}
-    >
-      Create data asset
-    </LoadingButton>
-  );
 }
