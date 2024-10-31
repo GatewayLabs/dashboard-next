@@ -191,6 +191,7 @@ export default function Asset({ token: githubToken }: Props) {
             variant="outlined"
             size="large"
             endIcon={<OpenInNew />}
+            target="_blank"
           >
             Open data asset
           </Button>
