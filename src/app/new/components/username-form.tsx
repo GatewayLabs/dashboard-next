@@ -1,7 +1,7 @@
 'use client';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import { LoadingButton } from '@/components/buttons/loading-button';
 import routes from '@/constants/routes';
@@ -35,6 +35,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default function UsernameForm({ message, signature, network }: Props) {
   const { enqueueSnackbar } = useSnackbar();
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -86,13 +87,14 @@ export default function UsernameForm({ message, signature, network }: Props) {
   };
 
   if (isSuccess) {
+    const callbackUrl = searchParams.get('callbackUrl');
     return (
       <Stack gap={5}>
         <UserCreatedTitle />
         <NewUserCard />
         <Button
           component={Link}
-          href={routes.dashboard.storage}
+          href={callbackUrl ?? routes.dashboard.storage}
           variant="contained"
           size="large"
         >

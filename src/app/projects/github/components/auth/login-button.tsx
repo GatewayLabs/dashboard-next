@@ -1,6 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next-nprogress-bar';
 import { Suspense, useState } from 'react';
 
 import routes from '@/constants/routes';
@@ -14,6 +15,7 @@ export default function LoginButton() {
   const [isModalWaleltOpen, setIsModalWalletOpen] = useState(false);
   const { status } = useSession();
   const { data: session } = useSession();
+  const router = useRouter();
 
   const PrimaryButton = {
     label: 'Open dashboard',
@@ -23,6 +25,7 @@ export default function LoginButton() {
       ? { href: routes.projects.github.mydata }
       : {
           onClick: () => {
+            router.push(`?callbackUrl=${routes.projects.github.mydata}`);
             setIsModalWalletOpen(true);
           },
         }),
