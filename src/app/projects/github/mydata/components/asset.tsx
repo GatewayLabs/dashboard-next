@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
 import { OpenInNew } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 import { createGithubDataAsset } from '../../utils';
 import { PercentageLanguageCount, PercentageLanguageKey } from './types';
@@ -84,14 +84,14 @@ const fetchGitHubData = async (accessToken: string) => {
         const count = repoStats.filter(
           (repo) => repo.language === language
         ).length;
-        acc[key] = (count / totalRepos) * 100;
+        acc[key] = Math.floor((count / totalRepos) * 100);
         return acc;
       },
       {
         percentageOfRepoInJavaScript: 0,
         percentageOfRepoInPython: 0,
         percentageOfRepoInJava: 0,
-        percentageOfRepoInTypescript: 0,
+        percentageOfRepoInTypeScript: 0,
         percentageOfRepoInCSharp: 0,
         percentageOfRepoInCPP: 0,
         percentageOfRepoInPHP: 0,
@@ -183,15 +183,28 @@ export default function Asset({ token: githubToken }: Props) {
 
   if (data) {
     return (
-      <Button
-        component={Link}
-        href={routes.dashboard.storageAsset(data.id)}
-        variant="outlined"
-        size="large"
-        endIcon={<OpenInNew />}
-      >
-        Open data asset
-      </Button>
+      <>
+        <Stack direction="row" gap={2}>
+          <Button
+            component={Link}
+            href={routes.dashboard.storageAsset(data.id)}
+            variant="outlined"
+            size="large"
+            endIcon={<OpenInNew />}
+          >
+            Open data asset
+          </Button>
+          <LoadingButton
+            variant="contained"
+            size="large"
+            disabled={isPending || !githubToken}
+            onClick={onCreateDataAsset}
+            sx={{ opacity: 0 }}
+          >
+            Create data asset
+          </LoadingButton>
+        </Stack>
+      </>
     );
   }
 

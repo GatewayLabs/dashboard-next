@@ -2,7 +2,7 @@ export const percentageLanguageCount = {
   percentageOfRepoInJavaScript: 0,
   percentageOfRepoInPython: 0,
   percentageOfRepoInJava: 0,
-  percentageOfRepoInTypescript: 0,
+  percentageOfRepoInTypeScript: 0,
   percentageOfRepoInCSharp: 0,
   percentageOfRepoInCPP: 0,
   percentageOfRepoInPHP: 0,
