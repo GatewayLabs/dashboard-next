@@ -73,7 +73,7 @@ export default function Compute() {
         </Stack>
       )}
       {!!availableAssets && parseInt(availableAssets!) < 5 && (
-        <Alert severity="warning" sx={{ alignItems: 'center' }}>
+        <Alert severity="warning" sx={{ alignItems: 'center', mt: 2 }}>
           <Stack sx={{ ml: 1 }}>
             <Typography>Private computing is unavailable</Typography>
             Must have 5 more GitHub data assets
@@ -83,14 +83,14 @@ export default function Compute() {
       <Button
         variant="contained"
         size="large"
-        sx={{ alignSelf: 'flex-start', mt: 3 }}
+        sx={{ alignSelf: 'flex-start', mt: 2 }}
         endIcon={isLoading ? <CircularProgress size={16} /> : <BiRightArrow />}
         disabled={
           isLoading || (!!availableAssets && parseInt(availableAssets!) < 5)
         }
         onClick={onCompute}
       >
-        Compute now
+        {isSuccess ? 'Compute again' : 'Compute now'}
       </Button>
       {/* {error && (
         <Typography color="error" sx={{ alignSelf: 'flex-start' }}>
