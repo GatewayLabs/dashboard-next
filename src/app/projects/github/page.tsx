@@ -23,7 +23,7 @@ export default function GithubProject() {
 
   return (
     <GithubLayout>
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={4} mb={4}>
+      <Stack direction={{ xs: 'column', md: 'row' }} gap={4}>
         <TextData
           title="What is that?"
           description="This is a showcase demonstrating how the Gateway Encrypted Compute works using publicly available GitHub data as an example. When you connect your GitHub account, the system retrieves various metrics like contributions, repository activity, and programming language diversity to illustrate how we process real-world data securely. All computations happen with privacy in mind, ensuring your data is protected during every step of the process."

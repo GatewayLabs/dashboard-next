@@ -32,7 +32,9 @@ export default function LoginButton() {
     <>
       {!session?.user && (
         <>
-          <Button {...PrimaryButton}>Start Now</Button>
+          <Button {...PrimaryButton} size="large">
+            Start Now
+          </Button>
           <Suspense fallback={null}>
             <WalletConnectionProvider>
               <AuthenticationWalletModals
