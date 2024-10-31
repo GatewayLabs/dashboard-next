@@ -199,7 +199,7 @@ export default function Asset({ token: githubToken }: Props) {
     <LoadingButton
       variant="contained"
       size="large"
-      disabled={isPending}
+      disabled={isPending || !githubToken}
       onClick={onCreateDataAsset}
     >
       Create data asset

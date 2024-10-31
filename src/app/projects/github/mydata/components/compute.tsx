@@ -5,6 +5,7 @@ import { BiRightArrow } from 'react-icons/bi';
 
 import { CalculateOutlined } from '@mui/icons-material';
 import {
+  Alert,
   Button,
   Card,
   CircularProgress,
@@ -24,7 +25,7 @@ export default function Compute() {
     queryFn: async () => {
       const res = await fetch('/projects/github/api/available-assets');
       const data = (await res.json()) as { total_items: number };
-      return data.total_items.toString();
+      return data.total_items.toString() || '0';
     },
   });
   const { data: computedCreated } = useQuery({
@@ -71,12 +72,22 @@ export default function Compute() {
           <CardLoading label={label} description="This will take a while" />
         </Stack>
       )}
+      {!!availableAssets && parseInt(availableAssets!) < 5 && (
+        <Alert severity="warning" sx={{ alignItems: 'center' }}>
+          <Stack sx={{ ml: 1 }}>
+            <Typography>Private computing is unavailable</Typography>
+            Must have 5 more GitHub data assets
+          </Stack>
+        </Alert>
+      )}
       <Button
         variant="contained"
         size="large"
         sx={{ alignSelf: 'flex-start', mt: 3 }}
         endIcon={isLoading ? <CircularProgress size={16} /> : <BiRightArrow />}
-        disabled={isLoading}
+        disabled={
+          isLoading || (!!availableAssets && parseInt(availableAssets!) < 5)
+        }
         onClick={onCompute}
       >
         Compute now
