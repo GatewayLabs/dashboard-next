@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-
 import { authApi } from '@/services/api/api';
 import {
   components,
@@ -11,7 +9,23 @@ import { repoLanguages } from '../../mydata/components/types';
 type ComputeRequest = components['schemas']['dto.ComputeRequestResponse'];
 type DataAsset = components['schemas']['dto.PublicDataAsset'];
 
-const api = authApi(process.env.GATEWAY_USER_TOKEN!);
+let gatewayUserToken: string | null = null;
+
+async function getGatewayUserToken(): Promise<string> {
+  if (gatewayUserToken) {
+    return gatewayUserToken;
+  }
+
+  const url = process.env.NEXTAUTH_URL;
+  const gatewayLogin = await fetch(`${url}/projects/github/api/login-gateway`);
+  const data = (await gatewayLogin.json()) as { token: string };
+  if (!data || !data.token) {
+    throw new Error('Gateway user token not found');
+  }
+
+  gatewayUserToken = data.token;
+  return gatewayUserToken;
+}
 
 const operations: Omit<
   components['schemas']['dto.ComputeRequestCreateRequest'],
@@ -48,6 +62,9 @@ repoLanguages.forEach((language) => {
 });
 
 async function createComputeRequests(): Promise<ComputeRequest[]> {
+  const gatewayUserToken = await getGatewayUserToken();
+  const api = authApi(gatewayUserToken);
+
   const computeRequests = await Promise.all(
     operations.map(async (operation) => {
       try {
@@ -88,6 +105,8 @@ async function createComputeRequests(): Promise<ComputeRequest[]> {
 }
 
 async function getDataAssets(): Promise<DataAsset[]> {
+  const gatewayUserToken = await getGatewayUserToken();
+  const api = authApi(gatewayUserToken);
   const pdas: DataAsset[] = [];
   let page = 1;
   while (page > -1) {
@@ -124,16 +143,14 @@ async function getDataAssets(): Promise<DataAsset[]> {
 const encoder = new TextEncoder();
 
 async function* executeComputeRequests() {
+  const gatewayUserToken = await getGatewayUserToken();
+  const api = authApi(gatewayUserToken);
   yield encoder.encode('Creating compute requests');
-  // Create compute requests for each operation
+
   const computeRequest = await createComputeRequests();
-  // yield computeRequest created
 
-  // Get all pdas from data_model_id
   const pdas = await getDataAssets();
-  // yield pdas fetched
 
-  // Accept all pdas for all compute requests
   const acceptedRequests = await Promise.all(
     computeRequest.map(async (computeRequest) => {
       if (!computeRequest?.id) {
@@ -160,12 +177,12 @@ async function* executeComputeRequests() {
     })
   );
 
-  // TODO: Start each compute request
   const successfulAccepts = acceptedRequests.filter(Boolean);
+
+  console.log('Compute requests accepted:', successfulAccepts.length);
 
   yield encoder.encode('Compute encrypted data');
 
-  //TODO: remove
   await new Promise((resolve) => setTimeout(resolve, 5000));
 }
 
@@ -183,7 +200,7 @@ function iteratorToStream(iterator: any) {
   });
 }
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   const execution = executeComputeRequests();
   const stream = iteratorToStream(execution);
 

@@ -181,10 +181,10 @@ export default function Asset({ token: githubToken }: Props) {
     );
   }
 
-  if (data) {
-    return (
-      <>
-        <Stack gap={2} sx={{ xs: 'column', md: 'row' }}>
+  return (
+    <>
+      <Stack gap={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
+        {data && (
           <Button
             component={Link}
             href={routes.dashboard.storageAsset(data.id)}
@@ -195,17 +195,17 @@ export default function Asset({ token: githubToken }: Props) {
           >
             Open data asset
           </Button>
-          <LoadingButton
-            variant="contained"
-            size="large"
-            disabled={isPending || !githubToken}
-            onClick={onCreateDataAsset}
-            sx={{ opacity: 0 }}
-          >
-            Create data asset
-          </LoadingButton>
-        </Stack>
-      </>
-    );
-  }
+        )}
+        <LoadingButton
+          variant="contained"
+          size="large"
+          disabled={isPending || !githubToken}
+          onClick={onCreateDataAsset}
+          sx={{ opacity: data ? 0 : 1 }}
+        >
+          Create data asset
+        </LoadingButton>
+      </Stack>
+    </>
+  );
 }

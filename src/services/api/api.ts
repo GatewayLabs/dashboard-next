@@ -27,9 +27,9 @@ export const api = createFetchClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 
-export const authApi = (token: string, clientOptions?: ClientOptions) =>
+export const authApi = (token?: string, clientOptions?: ClientOptions) =>
   createFetchClient<RemoveHeaderParamsFromPaths>({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
-    headers: getAuthHeader(token),
+    headers: token ? getAuthHeader(token) : undefined,
     ...clientOptions,
   });
