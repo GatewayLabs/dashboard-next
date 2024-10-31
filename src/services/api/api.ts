@@ -1,4 +1,4 @@
-import createFetchClient from 'openapi-fetch';
+import createFetchClient, { ClientOptions } from 'openapi-fetch';
 
 import type { paths } from './types';
 
@@ -27,8 +27,9 @@ export const api = createFetchClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 
-export const authApi = (token: string) =>
+export const authApi = (token: string, clientOptions?: ClientOptions) =>
   createFetchClient<RemoveHeaderParamsFromPaths>({
     baseUrl: process.env.NEXT_PUBLIC_API_URL,
     headers: getAuthHeader(token),
+    ...clientOptions,
   });
