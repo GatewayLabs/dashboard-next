@@ -1,9 +1,7 @@
 import Image from 'next/image';
 
-import { Box, Card, Chip, Typography } from '@mui/material';
+import { Box, Button, Card, Chip, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-
-import LoginButton from './auth/login-button';
 
 import HeroImage from '/public/images/hero-github.png';
 
@@ -38,7 +36,7 @@ export default function Hero() {
           <Typography variant="h2" mb={2} sx={{ fontSize: { xs: 34, md: 60 } }}>
             Compute GitHub data using Gateway Encrypted Compute
           </Typography>
-          <LoginButton />
+          <Button size="large">Start Now</Button>
         </Stack>
       </Card>
       <Box

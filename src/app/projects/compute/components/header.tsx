@@ -4,8 +4,6 @@ import routes from '@/constants/routes';
 
 import { Stack } from '@mui/system';
 
-import AuthComponent from './auth/auth-component';
-
 function Header() {
   return (
     <Stack
@@ -18,7 +16,6 @@ function Header() {
       }}
     >
       <Logo href={routes.projects.github.home} />
-      <AuthComponent id="github-header-auth" controlId="github-header-auth" />
     </Stack>
   );
 }
