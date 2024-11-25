@@ -162,6 +162,8 @@ export function MissionImage() {
             objectFit: 'cover',
             objectPosition: 'center',
             mixBlendMode: 'multiply',
+            width: '100%',
+            height: '100%',
           }}
         />
       </Box>
