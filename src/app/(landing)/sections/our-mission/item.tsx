@@ -1,5 +1,5 @@
-"use client";
-import Image, { StaticImageData } from "next/image";
+'use client';
+import Image, { StaticImageData } from 'next/image';
 import {
   createContext,
   PropsWithChildren,
@@ -7,25 +7,27 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
-import { Box, Stack } from "@mui/material";
+import { Box, Stack } from '@mui/material';
 
-import { missions } from "./missons";
+import { missions } from './missons';
 
-import ControlImage from "/public/images/missions/control.png";
-import CubeImage from "/public/images/missions/cube.png";
-import PrivacyImage from "/public/images/missions/privacy.png";
+import ComputeImage from '/public/images/missions/compute.png';
+import ConfidentialityImage from '/public/images/missions/confidentiality.png';
+import ProcessingImage from '/public/images/missions/processing.png';
+import AccessImage from '/public/images/missions/access.png';
 
 // Which image to show for each mission
-const imageByMissionId: Record<ActiveItem["id"], StaticImageData> = {
-  control: ControlImage,
-  privacy: PrivacyImage,
-  blocks: CubeImage,
+const imageByMissionId: Record<ActiveItem['id'], StaticImageData> = {
+  compute: ComputeImage,
+  confidentiality: ConfidentialityImage,
+  processing: ProcessingImage,
+  access: AccessImage,
 };
 
 type ActiveItem = {
-  id: (typeof missions)[number]["id"];
+  id: (typeof missions)[number]['id'];
   element?: HTMLElement;
 };
 
@@ -57,7 +59,7 @@ export function ActiveContextProvider({ children }: PropsWithChildren) {
 export function OurMissionItem({
   id,
   children,
-}: PropsWithChildren<{ id: (typeof missions)[number]["id"] }>) {
+}: PropsWithChildren<{ id: (typeof missions)[number]['id'] }>) {
   const { active, setActive } = useContext(ActiveContext);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -76,7 +78,7 @@ export function OurMissionItem({
         opacity: {
           md: active.id === id ? 1 : 0.3,
         },
-        transition: "opacity 0.25s ease",
+        transition: 'opacity 0.25s ease',
         zIndex: 1,
       }}
       tabIndex={0}
@@ -96,10 +98,11 @@ export function OurMissionItem({
 }
 
 // Controls the position of the image
-const topByMissionId: Record<ActiveItem["id"], number> = {
-  control: 50,
-  privacy: 218,
-  blocks: 218,
+const topByMissionId: Record<ActiveItem['id'], number> = {
+  compute: 50,
+  confidentiality: 218,
+  processing: 218,
+  access: 218,
 };
 
 export function MissionImage() {
@@ -119,8 +122,8 @@ export function MissionImage() {
       }
     };
     onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [active.element]);
 
   if (!active.element || !topPosition) {
@@ -130,25 +133,25 @@ export function MissionImage() {
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: 'absolute',
         top: topPosition,
         right: 0,
         borderRadius: 1.5,
-        backgroundColor: "primary.light",
+        backgroundColor: 'primary.light',
         width: 437,
         height: 437,
-        transition: "top .25s ease-out",
-        overflow: "hidden",
+        transition: 'top .25s ease-out',
+        overflow: 'hidden',
         opacity: 0.6,
         display: {
-          xs: "none",
-          md: "block",
+          xs: 'none',
+          md: 'block',
         },
       }}
     >
       <Box
         sx={{
-          position: "relative",
+          position: 'relative',
           inset: 0,
         }}
       >
@@ -156,9 +159,9 @@ export function MissionImage() {
           src={imageByMissionId[active.id]}
           alt={mission!.title}
           style={{
-            objectFit: "cover",
-            objectPosition: "center",
-            mixBlendMode: "multiply",
+            objectFit: 'cover',
+            objectPosition: 'center',
+            mixBlendMode: 'multiply',
           }}
         />
       </Box>
