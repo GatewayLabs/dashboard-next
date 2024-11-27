@@ -106,7 +106,7 @@ const getDimensions = (isMobile: boolean, isTablet: boolean) => {
       orbitRadius: 140,
       buttonSize: 64,
       logoSize: 30,
-      centerLogoSize: 25,
+      centerLogoSize: 40,
     };
   }
   if (isTablet) {
@@ -116,7 +116,7 @@ const getDimensions = (isMobile: boolean, isTablet: boolean) => {
       orbitRadius: 180,
       buttonSize: 80,
       logoSize: 35,
-      centerLogoSize: 25,
+      centerLogoSize: 50,
     };
   }
   return {
@@ -125,7 +125,7 @@ const getDimensions = (isMobile: boolean, isTablet: boolean) => {
     orbitRadius: 260,
     buttonSize: 96,
     logoSize: 40,
-    centerLogoSize: 40,
+    centerLogoSize: 60,
   };
 };
 

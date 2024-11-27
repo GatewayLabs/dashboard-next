@@ -29,7 +29,7 @@ export const CustomLogo: React.FC<CustomLogoProps> = ({
     <svg
       width={logoSize}
       height={logoSize}
-      viewBox="0 0 66 66"
+      viewBox="0 0 68 68"
       fill="none"
       style={{
         transition: theme.transitions.create(['width', 'height'], {
